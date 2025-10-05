@@ -12,7 +12,7 @@ class OCR_Data(Dataset):
         self.root = Path(root)
         self.train = train
         self.transform = transform
-        
+
         self.path = os.path.join(self.root, "train" if train else "test")
         self.images = []
         self.labels = []
@@ -23,22 +23,22 @@ class OCR_Data(Dataset):
                 for img_name in os.listdir(label_path):
                     img_path = os.path.join(label_path, img_name)
                     self.images.append(img_path)
-                    self.labels.append(label) 
+                    self.labels.append(label)
 
         print(f"Found {len(self.images)} images in {self.path}")
-    
+
     def __len__(self):
         return len(self.labels)
 
     @staticmethod
     def char2label(c):
-        if c.isdigit(): 
+        if c.isdigit():
             return ord(c) - ord('0')
-        elif c.isupper():  
+        elif c.isupper():
             return ord(c) - ord('A') + 10
         else:
             raise ValueError(f"Invalid label: {c}")
-    
+
     def __getitem__(self, idx):
         img_path = self.images[idx]
         label_char = self.labels[idx]
@@ -57,19 +57,19 @@ class OCR_Data(Dataset):
 
         return img, label
 
-# if __name__ == "__main__":
-#     dataset_path = r"G:\Build_OCR\dataset"
-#     data = OCR_Data(root=dataset_path, train=True, transform=None)
+if __name__ == "__main__":
+    dataset_path = r"G:\Build_OCR\dataset"
+    data = OCR_Data(root=dataset_path, train=True, transform=None)
     
-#     image, label = data[2000]
-#     print("Image shape:", image.shape)
-#     print("Label:", label)
+    image, label = data[2000]
+    print("Image shape:", image.shape)
+    print("Label:", label)
 
-#     img_show = image.permute(1,2,0).numpy() 
-#     img_show = img_show * np.array([0.229,0.224,0.225]) + np.array([0.485,0.456,0.406])  # de-normalize
-#     img_show = np.clip(img_show, 0, 1)
+    img_show = image.permute(1,2,0).numpy() 
+    img_show = img_show * np.array([0.229,0.224,0.225]) + np.array([0.485,0.456,0.406])  # de-normalize
+    img_show = np.clip(img_show, 0, 1)
     
-#     plt.imshow(img_show)
-#     plt.title(f"Label: {label}")
-#     plt.axis('off')
-#     plt.show()
+    plt.imshow(img_show)
+    plt.title(f"Label: {label}")
+    plt.axis('off')
+    plt.show()
