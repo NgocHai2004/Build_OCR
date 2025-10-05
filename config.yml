@@ -1,6 +1,6 @@
 folder_path: "dataset/test/2"
 model_path: "model/char_model.pth"
-
+folder_output : "output"
 # Thông số xử lý ảnh
 img_size: [224,224]
 normalize: true

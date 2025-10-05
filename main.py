@@ -11,9 +11,10 @@ import matplotlib.pyplot as plt
 with open("config.yml", "r") as f:
     config = yaml.safe_load(f)
 
-folder_path = config["folder_path"]       # Thư mục chứa ảnh
+folder_path = config["folder_path"]     
 model_path = config["model_path"]
 img_size = config["img_size"]
+folder_output = config["folder_output"]
 
 # ===== Load model =====
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -56,7 +57,8 @@ for i, img_name in enumerate(image_files[:10]):
         _, pred = output.max(1)
 
     pred_char = label2char(pred.item())
-
+    output_path = os.path.join(folder_output, f"pred_{pred_char}_{img_name}")
+    cv2.imwrite(output_path, img)
     plt.subplot(2, 5, i + 1)
     plt.imshow(img_rgb)
     plt.title(f"Ảnh {i}\nPred: {pred_char}")
